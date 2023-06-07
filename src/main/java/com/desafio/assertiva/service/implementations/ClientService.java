@@ -47,9 +47,8 @@ public class ClientService implements IClientService {
     public ClientDTO findById(int id) {
 
         ClientModel client = repository.findById(id);
-        var clientDTO = feelClient(client);
 
-        return clientDTO;
+        return feelClient(client);
     }
 
 
@@ -60,14 +59,12 @@ public class ClientService implements IClientService {
         clientDTO.setCpf(client.getCpf());
         clientDTO.setName(client.getName());
 
-        if (client != null) {
-            int clientId = client.getId();
+        int clientId = client.getId();
 
-            // TODO Tentar melhorar isso usando interface . Usar o Objeto ClientDTO no lugar de clintId nos parametros de entrada.
-            clientDTO.setPhones(phoneService.feelContactItems(clientId));
-            clientDTO.setEmails(emailService.feelContactItems(clientId));
+        // TODO Tentar melhorar isso usando interface . Usar o Objeto ClientDTO no lugar de clintId nos parametros de entrada.
+        clientDTO.setPhones(phoneService.feelContactItems(clientId));
+        clientDTO.setEmails(emailService.feelContactItems(clientId));
 
-        }
 
         return clientDTO;
     }
@@ -82,9 +79,9 @@ public class ClientService implements IClientService {
             client.setCpf(requestBody.getCpf());
             client.setPhones(requestBody.getPhones());
             client.setEmails(requestBody.getEmails());
-            repository.save(client);
+            return Optional.of(repository.save(client));
         }
-        return null;
+        throw new RuntimeException("Cliente não encontrado");
     }
 
 //    @Override
