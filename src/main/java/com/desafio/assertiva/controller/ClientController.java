@@ -23,7 +23,7 @@ public class ClientController {
     public ResponseEntity<?> save(@RequestBody ClientModel requestBody) {
         try{
             Optional<ClientDTO> clientOP =  service.save(requestBody);
-            return new ResponseEntity<>(clientOP.get(), HttpStatus.CREATED);
+            return new ResponseEntity<>(clientOP.orElse(null), HttpStatus.CREATED);
         } catch (Exception e) {
             return ResponseEntity.badRequest().build(); // TODO melhorar tratamento de erro
         }
@@ -42,8 +42,7 @@ public class ClientController {
     public ResponseEntity<List<ClientModel>> findByName(@RequestParam("name") String name) {
         try{
             List<ClientModel> clients = service.findByName(name);
-            ResponseEntity<List<ClientModel>> clientModelResponseEntity = new ResponseEntity<>(clients, HttpStatus.OK);
-            return clientModelResponseEntity;
+            return new ResponseEntity<>(clients, HttpStatus.OK);
         } catch (Exception e) {
             return ResponseEntity.badRequest().build(); // TODO melhorar tratamento de erro
         }
@@ -54,8 +53,7 @@ public class ClientController {
         try{
             Optional<ClientDTO> client = Optional.ofNullable(service.findById(id));
 
-            ResponseEntity<ClientDTO> clientModelResponseEntity = new ResponseEntity<>(client.get(), HttpStatus.OK);
-            return clientModelResponseEntity;
+            return new ResponseEntity<>(client.orElse(null), HttpStatus.OK);
         } catch (Exception e) {
             return ResponseEntity.badRequest().build(); // TODO melhorar tratamento de erro
         }
@@ -65,7 +63,7 @@ public class ClientController {
     public ResponseEntity<?> update(@PathVariable("id") int id, @RequestBody ClientModel requestBody) {
         try{
             Optional<ClientModel> clientOP =  service.update(id, requestBody);
-            return new ResponseEntity<>(clientOP.get(), HttpStatus.OK);
+            return new ResponseEntity<>(clientOP.orElse(null), HttpStatus.OK);
         } catch (Exception e) {
             return ResponseEntity.badRequest().build(); // TODO melhorar tratamento de erro
         }
