@@ -12,7 +12,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -37,8 +36,11 @@ public class ClientService implements IClientService {
     }
 
     @Override
-    public List<Client> findByAreaCode(String areaCode) {
-        return repository.findClientByAreaCode(areaCode);
+    public Page<ClientSimplifiedDTO> findByAreaCode(String areaCode, Pageable page) {
+        Page<Client> clients = repository.findClientByAreaCode(areaCode, page);
+        Page<ClientSimplifiedDTO> clientListDTO =  clients.map(this::convertToDto);
+
+        return clientListDTO;
     }
 
     @Override

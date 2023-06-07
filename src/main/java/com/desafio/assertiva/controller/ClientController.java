@@ -13,7 +13,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Optional;
 
 
@@ -34,13 +33,14 @@ public class ClientController {
         }
     }
 
-    @GetMapping("/phone/{areaCode}")
-    public List<Client> listClientByAreaCode(@PathVariable("areaCode") String areaCode) {
-        try {
-            return service.findByAreaCode(areaCode);
-        } catch (Exception e) {
-            return null; // TODO melhorar tratamento de erro
-        }
+    @GetMapping("/listByAreaCode/{areaCode}")
+    public Page<ClientSimplifiedDTO> listClientByAreaCode(
+            @PathVariable("areaCode") String areaCode,
+            @PageableDefault(size = 15, page = 0, direction = Sort.Direction.DESC, sort = {"id"}) Pageable page
+    ) throws Exception {
+
+        return service.findByAreaCode(areaCode, page);
+
     }
 
     @GetMapping

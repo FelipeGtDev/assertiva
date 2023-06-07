@@ -8,7 +8,7 @@ CREATE TABLE client(
 CREATE TABLE phone(
     id BIGINT NOT NULL AUTO_INCREMENT,
     ddd varchar(2),
-    phone_number varchar(9),
+    number varchar(9),
     client_id BIGINT NOT NULL,
     PRIMARY KEY (id),
     FOREIGN KEY (client_id) REFERENCES client(id)
