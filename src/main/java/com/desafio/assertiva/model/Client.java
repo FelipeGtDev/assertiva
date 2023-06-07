@@ -1,6 +1,5 @@
 package com.desafio.assertiva.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -15,7 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "client")
-public class ClientModel {
+public class Client {
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -23,14 +22,10 @@ public class ClientModel {
     private Integer id;
     private String cpf;
     private String name;
-    @OneToMany(cascade = CascadeType.ALL)
-    private List<PhoneModel> phones = new ArrayList<>();
-    @OneToMany(cascade = CascadeType.ALL)
-    private List<EmailModel> emails = new ArrayList<>();
-
-    public ClientModel(ClientModel clientModel){
-
-    }
+    @OneToMany(mappedBy="client", cascade = CascadeType.ALL)
+    private List<Phone> phones = new ArrayList<>();
+    @OneToMany(mappedBy="client", cascade = CascadeType.ALL)
+    private List<Email> emails = new ArrayList<>();
 
 
 }

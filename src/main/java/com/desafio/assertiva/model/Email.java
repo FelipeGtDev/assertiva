@@ -6,22 +6,22 @@ import lombok.Data;
 @Data
 @Entity
 @Table(name = "email")
-public class EmailModel {
+public class Email {
     private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "client_id")
-    private ClientModel client;
-    private String email;
+    private Client client;
+    private String emailAddress;
 
-    public EmailModel(String email) {
-        this.email = email;
+    public Email(String email) {
+        this.emailAddress = email;
     }
 
-    public EmailModel() {
+    public Email() {
 
     }
 }

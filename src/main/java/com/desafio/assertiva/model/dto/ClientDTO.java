@@ -1,11 +1,13 @@
 package com.desafio.assertiva.model.dto;
 
+import lombok.Builder;
 import lombok.Data;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Data
+//@Builder
 public class ClientDTO {
 
     private Integer id;

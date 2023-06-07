@@ -1,6 +1,6 @@
 package com.desafio.assertiva.controller;
 
-import com.desafio.assertiva.model.ClientModel;
+import com.desafio.assertiva.model.Client;
 import com.desafio.assertiva.model.dto.ClientDTO;
 import com.desafio.assertiva.service.IClientService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +23,7 @@ public class ClientController {
     private IClientService service;
 
     @PostMapping
-    public ResponseEntity<?> save(@RequestBody ClientModel requestBody) {
+    public ResponseEntity<?> save(@RequestBody Client requestBody) {
         try{
             Optional<ClientDTO> clientOP =  service.save(requestBody);
             return new ResponseEntity<>(clientOP.orElse(null), HttpStatus.CREATED);
@@ -33,7 +33,7 @@ public class ClientController {
     }
 
     @GetMapping("/phone/{areaCode}")
-    public List<ClientModel> listClientByAreaCode(@PathVariable("areaCode") String areaCode) {
+    public List<Client> listClientByAreaCode(@PathVariable("areaCode") String areaCode) {
         try{
             return service.findByAreaCode(areaCode);
         } catch (Exception e) {
@@ -42,9 +42,9 @@ public class ClientController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ClientModel>> findByName(@RequestParam("name") String name) {
+    public ResponseEntity<List<Client>> findByName(@RequestParam("name") String name) {
         try{
-            List<ClientModel> clients = service.findByName(name);
+            List<Client> clients = service.findByName(name);
             return new ResponseEntity<>(clients, HttpStatus.OK);
         } catch (Exception e) {
             return ResponseEntity.badRequest().build(); // TODO melhorar tratamento de erro
@@ -52,7 +52,7 @@ public class ClientController {
     }
 
     @GetMapping("/list")
-    public List<ClientModel> list(@PageableDefault(size = 15, page = 0, direction = Sort.Direction.DESC, sort = {"updatedAt"} ) Pageable page) {
+    public List<Client> list(@PageableDefault(size = 15, page = 0, direction = Sort.Direction.DESC, sort = {"updatedAt"} ) Pageable page) {
 
 //            return service.list((java.awt.print.Pageable) page);
             return service.list();
@@ -71,9 +71,9 @@ public class ClientController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable("id") int id, @RequestBody ClientModel requestBody) {
+    public ResponseEntity<?> update(@PathVariable("id") int id, @RequestBody Client requestBody) {
         try{
-            Optional<ClientModel> clientOP =  service.update(id, requestBody);
+            Optional<Client> clientOP =  service.update(id, requestBody);
             return new ResponseEntity<>(clientOP.orElse(null), HttpStatus.OK);
         } catch (Exception e) {
             return ResponseEntity.badRequest().build(); // TODO melhorar tratamento de erro

@@ -1,6 +1,6 @@
 package com.desafio.assertiva.service.implementations;
 
-import com.desafio.assertiva.model.ClientModel;
+import com.desafio.assertiva.model.Client;
 import com.desafio.assertiva.model.dto.ClientDTO;
 import com.desafio.assertiva.repository.ClientRepository;
 import com.desafio.assertiva.service.IClientService;
@@ -26,33 +26,33 @@ public class ClientService implements IClientService {
 
 
     @Override
-    public Optional<ClientDTO> save(ClientModel clientModel) {
+    public Optional<ClientDTO> save(Client clientModel) {
 
-        Optional<ClientModel> clientOP = Optional.of(repository.save(clientModel));
+        Optional<Client> clientOP = Optional.of(repository.save(clientModel));
 
         return Optional.ofNullable(feelClient(clientOP.get()));
     }
 
     @Override
-    public List<ClientModel> findByAreaCode(String areaCode) {
+    public List<Client> findByAreaCode(String areaCode) {
         return repository.findClientByAreaCode(areaCode);
     }
 
     @Override
-    public List<ClientModel> findByName(String name) {
+    public List<Client> findByName(String name) {
         return repository.findByNameIgnoreCase(name);
     }
 
     @Override
     public ClientDTO findById(int id) {
 
-        ClientModel client = repository.findById(id);
+        Client client = repository.findById(id);
 
         return feelClient(client);
     }
 
 
-    public ClientDTO feelClient(ClientModel client) {
+    public ClientDTO feelClient(Client client) {
         ClientDTO clientDTO = new ClientDTO();
 
         clientDTO.setId(client.getId());
@@ -70,9 +70,9 @@ public class ClientService implements IClientService {
     }
 
     @Override
-    public Optional<ClientModel> update(int id, ClientModel requestBody) {
+    public Optional<Client> update(int id, Client requestBody) {
 
-        ClientModel client = repository.findById(id);
+        Client client = repository.findById(id);
 
         if (client != null) {
             client.setName(requestBody.getName());
@@ -90,7 +90,7 @@ public class ClientService implements IClientService {
 //    }
 
     @Override
-    public List<ClientModel> list() {
+    public List<Client> list() {
         return repository.findAll();
     }
 }
