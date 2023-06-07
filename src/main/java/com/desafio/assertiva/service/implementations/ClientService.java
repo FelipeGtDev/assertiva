@@ -7,6 +7,8 @@ import com.desafio.assertiva.service.IClientService;
 import com.desafio.assertiva.service.IEmailService;
 import com.desafio.assertiva.service.IPhoneService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -90,7 +92,7 @@ public class ClientService implements IClientService {
 //    }
 
     @Override
-    public List<Client> list() {
-        return repository.findAll();
+    public Page<Client> list(Pageable page){
+        return repository.findAll(page);
     }
 }

@@ -1,6 +1,7 @@
 package com.desafio.assertiva.repository;
 
 import com.desafio.assertiva.model.Client;
+import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -27,6 +28,6 @@ public interface ClientRepository extends JpaRepository<Client, Long> {
 //    @Query(value = "SELECT * FROM client", nativeQuery = true)
 //    Page<ClientModel> findAllWithPagination(Pageable pageable);
 
-    @Query(value = "SELECT * FROM client", nativeQuery = true)
-    List<Client> findAll();
+//    @Query(value = "SELECT * FROM client", nativeQuery = true)
+//    Page<Client> findAll();
 }

@@ -2,6 +2,8 @@ package com.desafio.assertiva.service;
 
 import com.desafio.assertiva.model.Client;
 import com.desafio.assertiva.model.dto.ClientDTO;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.Optional;
@@ -19,5 +21,5 @@ public interface IClientService {
     Optional<Client> update(int id, Client requestBody);
 
 //    Page<ClientModel> list(Pageable page);
-    List<Client> list();
+    Page<Client> list(Pageable page);
 }
