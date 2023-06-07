@@ -28,9 +28,12 @@ public class ClientService implements IClientService {
 
 
     @Override
-    public Optional<ClientDTO> save(Client clientModel) {
+    public Optional<ClientDTO> save(Client client) {
 
-        Optional<Client> clientOP = Optional.of(repository.save(clientModel));
+        client.getPhones().stream().forEach(phone -> phone.setClient(client));
+        client.getEmails().stream().forEach(email -> email.setClient(client));
+
+        Optional<Client> clientOP = Optional.of(repository.save(client));
 
         return Optional.ofNullable(feelClient(clientOP.get()));
     }

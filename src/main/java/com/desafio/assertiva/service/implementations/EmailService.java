@@ -24,7 +24,7 @@ public class EmailService implements IEmailService {
         List<Email> email = findByClientId(clientId);
         List<EmailDTO> emailDTO = new ArrayList<>();
         for (Email phone : email) {
-            emailDTO.add(new EmailDTO(phone.getId(), phone.getEmailAddress()));
+            emailDTO.add(new EmailDTO(phone.getId(), phone.getEmail()));
         }
         return emailDTO;
     }

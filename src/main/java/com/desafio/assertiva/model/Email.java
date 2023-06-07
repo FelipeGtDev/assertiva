@@ -17,10 +17,10 @@ public class Email {
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "client_id")
     private Client client;
-    private String emailAddress;
+    private String email;
 
     public Email(String email) {
-        this.emailAddress = email;
+        this.email = email;
     }
 
     public Email() {
