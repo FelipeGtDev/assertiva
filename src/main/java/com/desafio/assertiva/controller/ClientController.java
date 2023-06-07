@@ -4,6 +4,9 @@ import com.desafio.assertiva.model.ClientModel;
 import com.desafio.assertiva.model.dto.ClientDTO;
 import com.desafio.assertiva.service.IClientService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -46,6 +49,14 @@ public class ClientController {
         } catch (Exception e) {
             return ResponseEntity.badRequest().build(); // TODO melhorar tratamento de erro
         }
+    }
+
+    @GetMapping("/list")
+    public List<ClientModel> list(@PageableDefault(size = 15, page = 0, direction = Sort.Direction.DESC, sort = {"updatedAt"} ) Pageable page) {
+
+//            return service.list((java.awt.print.Pageable) page);
+            return service.list();
+
     }
 
     @GetMapping("/{id}")

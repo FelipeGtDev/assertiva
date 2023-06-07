@@ -87,4 +87,13 @@ public class ClientService implements IClientService {
         return null;
     }
 
+//    @Override
+//    public Page<ClientModel> list(Pageable page) {
+//        return repository.findAllWithPagination(page);
+//    }
+
+    @Override
+    public List<ClientModel> list() {
+        return repository.findAll();
+    }
 }
