@@ -2,6 +2,7 @@ package com.desafio.assertiva.service;
 
 import com.desafio.assertiva.model.Client;
 import com.desafio.assertiva.model.dto.ClientDTO;
+import com.desafio.assertiva.model.dto.ClientSimplifiedDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -14,12 +15,12 @@ public interface IClientService {
 
     List<Client> findByAreaCode(String areaCode) throws Exception;
 
-    List<Client> findByName(String name) throws Exception;
+    Page<ClientSimplifiedDTO> findByName(String name, Pageable page) throws Exception;
 
     ClientDTO findById(int id);
 
     Optional<Client> update(int id, Client requestBody);
 
 //    Page<ClientModel> list(Pageable page);
-    Page<ClientDTO> list(Pageable page);
+    Page<ClientSimplifiedDTO> list(Pageable page);
 }

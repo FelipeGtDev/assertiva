@@ -1,6 +1,8 @@
 package com.desafio.assertiva.repository;
 
 import com.desafio.assertiva.model.Client;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -16,17 +18,10 @@ public interface ClientRepository extends JpaRepository<Client, Long> {
     List<Client> findClientByAreaCode(String areaCode);
 
     @Query(value = "SELECT c.* FROM client c " +
-            "WHERE lower(c.name) like lower(concat('%', :name, '%')) ", nativeQuery = true)
-    List<Client> findByNameIgnoreCase(String name);
+            "WHERE lower(c.name) like lower(concat('%', :name, '%'))", nativeQuery = true)
+    Page<Client> findByNameIgnoreCase(String name, Pageable page);
 
     @Query(value = "SELECT * FROM client c WHERE c.id = :id", nativeQuery = true)
     Client findById(int id);
 
-
-//    @Query(value = "SELECT * FROM client", countQuery = "SELECT COUNT(*) FROM client", nativeQuery = true)
-//    @Query(value = "SELECT * FROM client", nativeQuery = true)
-//    Page<ClientModel> findAllWithPagination(Pageable pageable);
-
-//    @Query(value = "SELECT * FROM client", nativeQuery = true)
-//    Page<ClientDTO> findAll();
 }

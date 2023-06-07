@@ -2,6 +2,7 @@ package com.desafio.assertiva.controller;
 
 import com.desafio.assertiva.model.Client;
 import com.desafio.assertiva.model.dto.ClientDTO;
+import com.desafio.assertiva.model.dto.ClientSimplifiedDTO;
 import com.desafio.assertiva.service.IClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -25,8 +26,8 @@ public class ClientController {
 
     @PostMapping
     public ResponseEntity<?> save(@RequestBody Client requestBody) {
-        try{
-            Optional<ClientDTO> clientOP =  service.save(requestBody);
+        try {
+            Optional<ClientDTO> clientOP = service.save(requestBody);
             return new ResponseEntity<>(clientOP.orElse(null), HttpStatus.CREATED);
         } catch (Exception e) {
             return ResponseEntity.badRequest().build(); // TODO melhorar tratamento de erro
@@ -35,7 +36,7 @@ public class ClientController {
 
     @GetMapping("/phone/{areaCode}")
     public List<Client> listClientByAreaCode(@PathVariable("areaCode") String areaCode) {
-        try{
+        try {
             return service.findByAreaCode(areaCode);
         } catch (Exception e) {
             return null; // TODO melhorar tratamento de erro
@@ -43,27 +44,23 @@ public class ClientController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Client>> findByName(@RequestParam("name") String name) {
-        try{
-            List<Client> clients = service.findByName(name);
-            return new ResponseEntity<>(clients, HttpStatus.OK);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().build(); // TODO melhorar tratamento de erro
-        }
+    public Page<ClientSimplifiedDTO> findByName(
+            @RequestParam("name") String name,
+            @PageableDefault(size = 15, page = 0, direction = Sort.Direction.DESC, sort = {"id"}) Pageable page
+    ) throws Exception {
+        return service.findByName(name, page);
     }
 
-    @GetMapping("/list")
-    public Page<ClientDTO> list(@PageableDefault(size = 15, page = 0, direction = Sort.Direction.DESC, sort = {"id"} ) Pageable page) {
+    @GetMapping("/listAll")
+    public Page<ClientSimplifiedDTO> list(
+            @PageableDefault(size = 15, page = 0, direction = Sort.Direction.DESC, sort = {"id"}) Pageable page) {
 
-            Page<ClientDTO> clients =  service.list(page);
-            return clients;
-//            return service.list();
-
+        return service.list(page);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<ClientDTO> findById(@PathVariable("id") int id) {
-        try{
+        try {
             Optional<ClientDTO> client = Optional.ofNullable(service.findById(id));
 
             return new ResponseEntity<>(client.orElse(null), HttpStatus.OK);
@@ -74,8 +71,8 @@ public class ClientController {
 
     @PutMapping("/{id}")
     public ResponseEntity<?> update(@PathVariable("id") int id, @RequestBody Client requestBody) {
-        try{
-            Optional<Client> clientOP =  service.update(id, requestBody);
+        try {
+            Optional<Client> clientOP = service.update(id, requestBody);
             return new ResponseEntity<>(clientOP.orElse(null), HttpStatus.OK);
         } catch (Exception e) {
             return ResponseEntity.badRequest().build(); // TODO melhorar tratamento de erro

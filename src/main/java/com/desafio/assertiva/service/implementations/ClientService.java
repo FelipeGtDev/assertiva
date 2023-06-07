@@ -2,6 +2,7 @@ package com.desafio.assertiva.service.implementations;
 
 import com.desafio.assertiva.model.Client;
 import com.desafio.assertiva.model.dto.ClientDTO;
+import com.desafio.assertiva.model.dto.ClientSimplifiedDTO;
 import com.desafio.assertiva.repository.ClientRepository;
 import com.desafio.assertiva.service.IClientService;
 import com.desafio.assertiva.service.IEmailService;
@@ -41,8 +42,11 @@ public class ClientService implements IClientService {
     }
 
     @Override
-    public List<Client> findByName(String name) {
-        return repository.findByNameIgnoreCase(name);
+    public Page<ClientSimplifiedDTO> findByName(String name, Pageable page) {
+        Page<Client> clients = repository.findByNameIgnoreCase(name, page);
+        Page<ClientSimplifiedDTO> clientListDTO =  clients.map(this::convertToDto);
+
+        return clientListDTO;
     }
 
     @Override
@@ -86,26 +90,19 @@ public class ClientService implements IClientService {
         throw new RuntimeException("Cliente não encontrado");
     }
 
-//    @Override
-//    public Page<ClientModel> list(Pageable page) {
-//        return repository.findAllWithPagination(page);
-//    }
-
     @Override
-    public Page<ClientDTO> list(Pageable page){
+    public Page<ClientSimplifiedDTO> list(Pageable page){
         Page<Client> clients =  repository.findAll(page);
-        Page<ClientDTO> clientListDTO =  clients.map(client -> convertToDto(client));
+        Page<ClientSimplifiedDTO> clientListDTO =  clients.map(this::convertToDto);
 
         return clientListDTO;
     }
 
-    private ClientDTO convertToDto(Client client) {
-        ClientDTO clientDTO = new ClientDTO();
+    private ClientSimplifiedDTO convertToDto(Client client) {
+        ClientSimplifiedDTO clientDTO = new ClientSimplifiedDTO();
         clientDTO.setId(client.getId());
         clientDTO.setName(client.getName());
         clientDTO.setCpf(client.getCpf());
-//        clientDTO.setPhones(client.getPhones());
-//        clientDTO.setEmails(client.getEmails());
         return clientDTO;
     }
 }
