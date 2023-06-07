@@ -92,7 +92,20 @@ public class ClientService implements IClientService {
 //    }
 
     @Override
-    public Page<Client> list(Pageable page){
-        return repository.findAll(page);
+    public Page<ClientDTO> list(Pageable page){
+        Page<Client> clients =  repository.findAll(page);
+        Page<ClientDTO> clientListDTO =  clients.map(client -> convertToDto(client));
+
+        return clientListDTO;
+    }
+
+    private ClientDTO convertToDto(Client client) {
+        ClientDTO clientDTO = new ClientDTO();
+        clientDTO.setId(client.getId());
+        clientDTO.setName(client.getName());
+        clientDTO.setCpf(client.getCpf());
+//        clientDTO.setPhones(client.getPhones());
+//        clientDTO.setEmails(client.getEmails());
+        return clientDTO;
     }
 }

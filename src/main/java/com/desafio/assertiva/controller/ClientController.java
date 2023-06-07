@@ -53,9 +53,9 @@ public class ClientController {
     }
 
     @GetMapping("/list")
-    public Page<Client> list(@PageableDefault(size = 15, page = 0, direction = Sort.Direction.DESC, sort = {"id"} ) Pageable page) {
+    public Page<ClientDTO> list(@PageableDefault(size = 15, page = 0, direction = Sort.Direction.DESC, sort = {"id"} ) Pageable page) {
 
-            Page<Client> clients =  service.list(page);
+            Page<ClientDTO> clients =  service.list(page);
             return clients;
 //            return service.list();
 

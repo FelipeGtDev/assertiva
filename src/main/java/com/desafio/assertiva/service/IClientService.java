@@ -21,5 +21,5 @@ public interface IClientService {
     Optional<Client> update(int id, Client requestBody);
 
 //    Page<ClientModel> list(Pageable page);
-    Page<Client> list(Pageable page);
+    Page<ClientDTO> list(Pageable page);
 }
