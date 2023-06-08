@@ -29,10 +29,6 @@ public class ClientService implements IClientService {
 
     @Override
     public Optional<ClientDTO> save(Client client) {
-
-        client.getPhones().stream().forEach(phone -> phone.setClient(client));
-        client.getEmails().stream().forEach(email -> email.setClient(client));
-
         Optional<Client> clientOP = Optional.of(repository.save(client));
 
         return Optional.ofNullable(feelClient(clientOP.get()));
@@ -41,7 +37,7 @@ public class ClientService implements IClientService {
     @Override
     public Page<ClientSimplifiedDTO> findByAreaCode(String areaCode, Pageable page) {
         Page<Client> clients = repository.findClientByAreaCode(areaCode, page);
-        Page<ClientSimplifiedDTO> clientListDTO =  clients.map(this::convertToDto);
+        Page<ClientSimplifiedDTO> clientListDTO = clients.map(this::convertToSimplifiedDto);
 
         return clientListDTO;
     }
@@ -49,7 +45,7 @@ public class ClientService implements IClientService {
     @Override
     public Page<ClientSimplifiedDTO> findByName(String name, Pageable page) {
         Page<Client> clients = repository.findByNameIgnoreCase(name, page);
-        Page<ClientSimplifiedDTO> clientListDTO =  clients.map(this::convertToDto);
+        Page<ClientSimplifiedDTO> clientListDTO = clients.map(this::convertToSimplifiedDto);
 
         return clientListDTO;
     }
@@ -81,29 +77,55 @@ public class ClientService implements IClientService {
     }
 
     @Override
-    public Optional<Client> update(int id, Client requestBody) {
+    public ClientDTO update(int id, Client requestBody) {
 
         Client client = repository.findById(id);
 
         if (client != null) {
-            client.setName(requestBody.getName());
-            client.setCpf(requestBody.getCpf());
-            client.setPhones(requestBody.getPhones());
-            client.setEmails(requestBody.getEmails());
-            return Optional.of(repository.save(client));
+            client.setRelationsClientContacts();
+//            final var clienDTO = ClientDTO.builder() // TODO builder, reaproveitar
+//                    .id(client.getId())
+//                    .cpf(client.getCpf())
+//                    .name(client.getName())
+//                    .phonesDTO(client.convertPhoneToDTO())
+//                    .emailsDTO(client.convertEmailToDTO())
+//                    .build();
+
+//            client.setName(requestBody.getName());
+//            client.setCpf(requestBody.getCpf());
+//            client.setPhones(requestBody.getPhones());
+//            client.setEmails(requestBody.getEmails());
+//
+            var clientOP = Optional.of(repository.save(client));
+            if (clientOP.isPresent()) {
+                return convertToDto(clientOP.get());
+            }
         }
         throw new RuntimeException("Cliente não encontrado");
     }
 
+
+
+
     @Override
-    public Page<ClientSimplifiedDTO> list(Pageable page){
-        Page<Client> clients =  repository.findAll(page);
-        Page<ClientSimplifiedDTO> clientListDTO =  clients.map(this::convertToDto);
+    public Page<ClientSimplifiedDTO> list(Pageable page) {
+        Page<Client> clients = repository.findAll(page);
+        Page<ClientSimplifiedDTO> clientListDTO = clients.map(this::convertToSimplifiedDto);
 
         return clientListDTO;
     }
 
-    private ClientSimplifiedDTO convertToDto(Client client) {
+    private ClientDTO convertToDto(Client client) {
+        return ClientDTO.builder()
+                .id(client.getId())
+                .cpf(client.getCpf())
+                .name(client.getName())
+                .phones(client.convertPhoneToDTO())
+                .emails(client.convertEmailToDTO())
+                .build();
+    }
+
+    private ClientSimplifiedDTO convertToSimplifiedDto(Client client) { // TODO Melhorar a Classe ClientDTO para poder substituir esse metodo
         ClientSimplifiedDTO clientDTO = new ClientSimplifiedDTO();
         clientDTO.setId(client.getId());
         clientDTO.setName(client.getName());

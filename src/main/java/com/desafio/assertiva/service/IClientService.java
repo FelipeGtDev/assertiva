@@ -18,8 +18,7 @@ public interface IClientService {
 
     ClientDTO findById(int id);
 
-    Optional<Client> update(int id, Client requestBody);
+    ClientDTO update(int id, Client requestBody);
 
-//    Page<ClientModel> list(Pageable page);
     Page<ClientSimplifiedDTO> list(Pageable page);
 }

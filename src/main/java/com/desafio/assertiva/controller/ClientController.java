@@ -24,9 +24,10 @@ public class ClientController {
     private IClientService service;
 
     @PostMapping
-    public ResponseEntity<?> save(@RequestBody Client requestBody) {
+    public ResponseEntity<?> save(@RequestBody Client client) {
+        client.setRelationsClientContacts();
         try {
-            Optional<ClientDTO> clientOP = service.save(requestBody);
+            Optional<ClientDTO> clientOP = service.save(client);
             return new ResponseEntity<>(clientOP.orElse(null), HttpStatus.CREATED);
         } catch (Exception e) {
             return ResponseEntity.badRequest().build(); // TODO melhorar tratamento de erro
@@ -38,9 +39,7 @@ public class ClientController {
             @PathVariable("areaCode") String areaCode,
             @PageableDefault(size = 15, page = 0, direction = Sort.Direction.DESC, sort = {"id"}) Pageable page
     ) throws Exception {
-
         return service.findByAreaCode(areaCode, page);
-
     }
 
     @GetMapping
@@ -70,12 +69,17 @@ public class ClientController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable("id") int id, @RequestBody Client requestBody) {
+    public ResponseEntity<?> update(@PathVariable("id") int id, @RequestBody Client client) {
         try {
-            Optional<Client> clientOP = service.update(id, requestBody);
-            return new ResponseEntity<>(clientOP.orElse(null), HttpStatus.OK);
+            ClientDTO clientDTO = service.update(id, client);
+            return new ResponseEntity<>(clientDTO, HttpStatus.OK);
         } catch (Exception e) {
             return ResponseEntity.badRequest().build(); // TODO melhorar tratamento de erro
         }
+    }
+
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable("id") int id) {
+//        service.delete(id); TODO implementar
     }
 }
