@@ -21,4 +21,6 @@ public interface IClientService {
     ClientDTO update(int id, Client requestBody);
 
     Page<ClientSimplifiedDTO> list(Pageable page);
+
+    void deleteById(int id);
 }

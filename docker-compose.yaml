@@ -13,8 +13,6 @@ services:
     networks:
       - database
   assertiva:
-    image: assertiva
-    container_name: assertiva-api
     build:
       context: .
       dockerfile: Dockerfile
@@ -27,6 +25,15 @@ services:
       - database
     depends_on:
       - db
+  debugger:
+    image: azul/zulu-openjdk:17
+    container_name: assertiva-debugger
+    ports:
+      - "5005:5005"
+    networks:
+      - database
+    depends_on:
+      - assertiva
 networks:
   database:
     driver: bridge

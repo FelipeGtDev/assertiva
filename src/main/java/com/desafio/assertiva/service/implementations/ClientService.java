@@ -8,7 +8,6 @@ import com.desafio.assertiva.service.IClientService;
 import com.desafio.assertiva.service.IEmailService;
 import com.desafio.assertiva.service.IPhoneService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -85,9 +84,7 @@ public class ClientService implements IClientService {
             client.setRelationsClientContacts();
 
             var clientOP = Optional.of(repository.save(client));
-            if (clientOP.isPresent()) {
-                return convertToDto(clientOP.get());
-            }
+            return convertToDto(clientOP.get());
         }
         throw new RuntimeException("Cliente não encontrado");
     }
@@ -119,5 +116,9 @@ public class ClientService implements IClientService {
         clientDTO.setName(client.getName());
         clientDTO.setCpf(client.getCpf());
         return clientDTO;
+    }
+
+    public void deleteById(int id) {
+        repository.deleteById(id);
     }
 }

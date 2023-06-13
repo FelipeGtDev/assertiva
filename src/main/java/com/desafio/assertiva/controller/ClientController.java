@@ -84,7 +84,13 @@ public class ClientController {
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable("id") int id) {
-//        service.delete(id); TODO implementar
+    public ResponseEntity<?> delete(@PathVariable("id") int id) {
+        try{
+        service.deleteById(id);
+        return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return ResponseEntity.badRequest().build();
+        }
     }
 }
