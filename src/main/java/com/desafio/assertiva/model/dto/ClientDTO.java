@@ -1,9 +1,6 @@
 package com.desafio.assertiva.model.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +9,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class ClientDTO {
 
     private Integer id;
@@ -19,5 +17,7 @@ public class ClientDTO {
     private String name;
     private List<PhoneDTO> phones = new ArrayList<>();
     private List<EmailDTO> emails = new ArrayList<>();
+
+
 
 }
