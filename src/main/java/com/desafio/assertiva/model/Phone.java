@@ -1,21 +1,30 @@
 package com.desafio.assertiva.model;
 
+
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
+import java.io.Serializable;
 
 @Getter
 @Setter
 @Entity
 @Table(name = "phone")
-public class Phone {
-    private static final long serialVersionUID = 1L;
+public class Phone implements Serializable {
+
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "phone_id")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "phone_seq")
+    @SequenceGenerator(name = "phone_seq", sequenceName = "phone_seq", allocationSize = 1)
     private Integer id;
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "client_id")
+
+    @ManyToOne(optional = false, cascade = CascadeType.ALL)
+    @JoinColumn(name = "client_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Client client;
     private String ddd;
     private String number;

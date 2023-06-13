@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,17 +19,25 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "client")
-public class Client {
-    private static final long serialVersionUID = 1L;
+public class Client implements Serializable {
+
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "client_id")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "client_seq")
+    @SequenceGenerator(name = "client_seq", sequenceName = "client_seq", allocationSize = 1)
     private Integer id;
+
     private String cpf;
+
     private String name;
+
     @OneToMany(mappedBy = "client", cascade = CascadeType.ALL)
+    @OrderBy("ddd ASC")
     private List<Phone> phones = new ArrayList<>();
+
     @OneToMany(mappedBy = "client", cascade = CascadeType.ALL)
+    @OrderBy("email ASC")
     private List<Email> emails = new ArrayList<>();
 
     public void setRelationsClientContacts() {

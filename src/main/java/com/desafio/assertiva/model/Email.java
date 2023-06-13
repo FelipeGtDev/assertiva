@@ -3,19 +3,28 @@ package com.desafio.assertiva.model;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
+import java.io.Serializable;
 
 @Getter
 @Setter
 @Entity
 @Table(name = "email")
-public class Email {
-    private static final long serialVersionUID = 1L;
+public class Email implements Serializable {
+
+
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "email_id")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "email_seq")
+    @SequenceGenerator(name = "email_seq", sequenceName = "email_seq", allocationSize = 1)
     private Integer id;
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "client_id")
+
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "client_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Client client;
     private String email;
 

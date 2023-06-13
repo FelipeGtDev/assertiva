@@ -4,6 +4,7 @@ import com.desafio.assertiva.model.Client;
 import com.desafio.assertiva.model.dto.ClientDTO;
 import com.desafio.assertiva.model.dto.ClientSimplifiedDTO;
 import com.desafio.assertiva.service.IClientService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,6 +19,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/client")
+@Slf4j
 public class ClientController {
 
     @Autowired
@@ -28,6 +30,9 @@ public class ClientController {
         client.setRelationsClientContacts();
         try {
             Optional<ClientDTO> clientOP = service.save(client);
+            if(clientOP.isEmpty())
+                return ResponseEntity.badRequest().build();
+            log.info("Client saved: {}", clientOP.get().toString());
             return new ResponseEntity<>(clientOP.orElse(null), HttpStatus.CREATED);
         } catch (Exception e) {
             return ResponseEntity.badRequest().build(); // TODO melhorar tratamento de erro

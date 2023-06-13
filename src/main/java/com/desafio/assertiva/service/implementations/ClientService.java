@@ -7,6 +7,7 @@ import com.desafio.assertiva.repository.ClientRepository;
 import com.desafio.assertiva.service.IClientService;
 import com.desafio.assertiva.service.IEmailService;
 import com.desafio.assertiva.service.IPhoneService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,16 +16,15 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class ClientService implements IClientService {
 
-    @Autowired
-    public ClientRepository repository;
+    public final ClientRepository repository;
 
-    @Autowired
-    public IPhoneService phoneService;
+    public final IPhoneService phoneService;
 
-    @Autowired
-    public IEmailService emailService;
+    public final IEmailService emailService;
+
 
 
     @Override
@@ -83,19 +83,7 @@ public class ClientService implements IClientService {
 
         if (client != null) {
             client.setRelationsClientContacts();
-//            final var clienDTO = ClientDTO.builder() // TODO builder, reaproveitar
-//                    .id(client.getId())
-//                    .cpf(client.getCpf())
-//                    .name(client.getName())
-//                    .phonesDTO(client.convertPhoneToDTO())
-//                    .emailsDTO(client.convertEmailToDTO())
-//                    .build();
 
-//            client.setName(requestBody.getName());
-//            client.setCpf(requestBody.getCpf());
-//            client.setPhones(requestBody.getPhones());
-//            client.setEmails(requestBody.getEmails());
-//
             var clientOP = Optional.of(repository.save(client));
             if (clientOP.isPresent()) {
                 return convertToDto(clientOP.get());
