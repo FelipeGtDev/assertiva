@@ -10,7 +10,8 @@ spring:
     author: Felipe
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://postgres-assertiva/assertiva
+    url: jdbc:postgresql://localhost/assertiva     #Conexão local
+#    url: jdbc:postgresql://postgres-assertiva/assertiva    #Conexão docker
     username: postgres
     password: postgres
   jpa:
