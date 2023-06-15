@@ -10,7 +10,7 @@ import java.util.Optional;
 
 public interface IClientService {
 
-    Optional<ClientDTO> save(Client clientModel) throws Exception;
+    Optional<ClientDTO> save(ClientDTO clientDTO) throws Exception;
 
     Page<ClientSimplifiedDTO> findByAreaCode(String areaCode, Pageable page) throws Exception;
 
@@ -18,7 +18,7 @@ public interface IClientService {
 
     ClientDTO findById(int id);
 
-    ClientDTO update(int id, Client requestBody);
+    ClientDTO update(int id, ClientDTO clientDTO);
 
     Page<ClientSimplifiedDTO> list(Pageable page);
 

@@ -26,10 +26,10 @@ public class ClientController {
     private IClientService service;
 
     @PostMapping
-    public ResponseEntity<?> save(@RequestBody Client client) {
-        client.setRelationsClientContacts();
+    public ResponseEntity<?> save(@RequestBody ClientDTO clientDTO) {
+
         try {
-            Optional<ClientDTO> clientOP = service.save(client);
+            Optional<ClientDTO> clientOP = service.save(clientDTO);
             if(clientOP.isEmpty())
                 return ResponseEntity.badRequest().build();
             log.info("Client saved: {}", clientOP.get().toString());
@@ -74,9 +74,9 @@ public class ClientController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable("id") int id, @RequestBody Client client) {
+    public ResponseEntity<?> update(@PathVariable("id") int id, @RequestBody ClientDTO request) {
         try {
-            ClientDTO clientDTO = service.update(id, client);
+            ClientDTO clientDTO = service.update(id, request);
             return new ResponseEntity<>(clientDTO, HttpStatus.OK);
         } catch (Exception e) {
             return ResponseEntity.badRequest().build(); // TODO melhorar tratamento de erro
@@ -90,7 +90,7 @@ public class ClientController {
         return ResponseEntity.ok().build();
         } catch (Exception e) {
             log.error(e.getMessage());
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 }

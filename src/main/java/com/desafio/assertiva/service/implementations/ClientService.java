@@ -27,11 +27,14 @@ public class ClientService implements IClientService {
 
 
     @Override
-    public Optional<ClientDTO> save(Client client) {
+    public Optional<ClientDTO> save(ClientDTO clientDTO) {
+        Client client = new Client(clientDTO);
+        client.setRelationsClientContacts();
         Optional<Client> clientOP = Optional.of(repository.save(client));
 
         return Optional.ofNullable(feelClient(clientOP.get()));
     }
+
 
     @Override
     public Page<ClientSimplifiedDTO> findByAreaCode(String areaCode, Pageable page) {
@@ -75,15 +78,21 @@ public class ClientService implements IClientService {
         return clientDTO;
     }
 
+
+
+    //Metodo ainda não funciona
     @Override
-    public ClientDTO update(int id, Client requestBody) {
+    public ClientDTO update(int id, ClientDTO clientDTO) {
+        Client oldClient = repository.findById(id);
+//        EntityManager em = entityManagerFactory.createEntityManager();
+        if (oldClient != null) {
 
-        Client client = repository.findById(id);
 
-        if (client != null) {
-            client.setRelationsClientContacts();
+            Client updateClient = new Client(clientDTO);
+            updateClient.setId(id);
+            updateClient.setRelationsClientContacts();
 
-            var clientOP = Optional.of(repository.save(client));
+            var clientOP = Optional.of(repository.update(updateClient));
             return convertToDto(clientOP.get());
         }
         throw new RuntimeException("Cliente não encontrado");
@@ -118,7 +127,13 @@ public class ClientService implements IClientService {
         return clientDTO;
     }
 
-    public void deleteById(int id) {
-        repository.deleteById(id);
+    public void deleteById(int id) { //TODO mudar para deleteById
+
+        Client client = repository.findById(id);
+        if (client == null) {
+            throw new RuntimeException("Cliente não encontrado, não foi possivel deletar");
+        }
+//        repository.deleteById(id);
+        repository.delete(client);
     }
 }

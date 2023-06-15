@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 public interface ClientRepository extends JpaRepository<Client, Long> {
 
     @Query(value = "SELECT c.* FROM client c " +
-            "JOIN phone p ON c.id = p.client_id " +
+            "JOIN phone p ON c.client_id = p.client_id " +
             "WHERE p.ddd = :areaCode ", nativeQuery = true)
     Page<Client> findClientByAreaCode(String areaCode, Pageable page);
 
@@ -19,9 +19,12 @@ public interface ClientRepository extends JpaRepository<Client, Long> {
             "WHERE lower(c.name) like lower(concat('%', :name, '%'))", nativeQuery = true)
     Page<Client> findByNameIgnoreCase(String name, Pageable page);
 
-    @Query(value = "SELECT * FROM client c WHERE c.id = :id", nativeQuery = true)
+    @Query(value = "SELECT * FROM client c WHERE c.client_id = :id", nativeQuery = true)
     Client findById(int id);
 
-    @Query(value = "DELETE FROM client c WHERE c.id = :id", nativeQuery = true)
+    @Query(value = "DELETE FROM client c WHERE c.client_id = :id", nativeQuery = true)
     void deleteById(int id);
+
+    @Query(value = "UPDATE client c SET c.name = :name, c.cpf = :cpf WHERE c.client_id = :id", nativeQuery = true)
+    Client update(Client client);
 }
