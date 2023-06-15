@@ -1,5 +1,6 @@
 package com.desafio.assertiva.model;
 
+import com.desafio.assertiva.model.dto.EmailDTO;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -34,5 +35,9 @@ public class Email implements Serializable {
 
     public Email() {
 
+    }
+
+    public Email(EmailDTO emailDTO) {
+        this.email = emailDTO.getEmail();
     }
 }

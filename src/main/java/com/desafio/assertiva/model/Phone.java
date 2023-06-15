@@ -1,6 +1,7 @@
 package com.desafio.assertiva.model;
 
 
+import com.desafio.assertiva.model.dto.PhoneDTO;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -37,5 +38,10 @@ public class Phone implements Serializable {
 
     public Phone() {
 
+    }
+
+    public Phone(PhoneDTO phoneDTO) {
+        this.ddd = phoneDTO.getDdd();
+        this.number = phoneDTO.getNumber();
     }
 }

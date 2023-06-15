@@ -1,5 +1,6 @@
 package com.desafio.assertiva.model;
 
+import com.desafio.assertiva.model.dto.ClientDTO;
 import com.desafio.assertiva.model.dto.EmailDTO;
 import com.desafio.assertiva.model.dto.PhoneDTO;
 import jakarta.persistence.*;
@@ -39,6 +40,14 @@ public class Client implements Serializable {
     @OneToMany(mappedBy = "client", cascade = CascadeType.ALL)
     @OrderBy("email ASC")
     private List<Email> emails = new ArrayList<>();
+
+    public Client(ClientDTO clientDTO) {
+        this.id = clientDTO.getId();
+        this.cpf = clientDTO.getCpf();
+        this.name = clientDTO.getName();
+        clientDTO.getPhones().stream().forEach(phoneDTO -> this.phones.add(new Phone(phoneDTO)));
+        clientDTO.getEmails().stream().forEach(emailDTO -> this.emails.add(new Email(emailDTO)));
+    }
 
     public void setRelationsClientContacts() {
         this.getPhones().stream().forEach(phone -> phone.setClient(this));
